@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz sull'Intelligenza Artificiale e Python</title>
+<!-- Script JavaScript -->
+<script>
+    // Funzione per ottenere il best_score dal server e aggiornare la pagina
+    function updateBestScore() {
+        fetch('/best_score')
+            .then(response => response.text())
+            .then(bestScore => {
+                document.getElementById('best-score').textContent = bestScore + "%";
+            })
+            .catch(error => {
+                console.error('Errore durante il recupero del best_score:', error);
+            });
+    }
+
+    // Chiamata alla funzione al caricamento della pagina
+    updateBestScore();
+</script>
+</head>
+<body>
+
+<!-- Best Score -->
+
+<div style="position: absolute; top: 10px; right: 10px;">
+    <p>Best Score: <span id="best-score"></span></p>
+</div>
+
+<h2>Quiz</h2>
+<form method="POST" action="/quiz" onsubmit="return validateForm()">
+    {% for question in questions %}
+    <h3>{{ question.question }}</h3>
+    <input type="radio" name="{{ question.id }}" value="{{ question.option1 }}">{{ question.option1 }}<br>
+    <input type="radio" name="{{ question.id }}" value="{{ question.option2 }}">{{ question.option2 }}<br>
+    <input type="radio" name="{{ question.id }}" value="{{ question.option3 }}">{{ question.option3 }}<br>
+    {% endfor %}
+    <button type="submit">Invia</button>
+</form>
+
+<footer>Developed by: Cristian </footer>
+
+</body>
+</html>
